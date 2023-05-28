@@ -17,6 +17,8 @@
   hello-nur = pkgs.callPackage ./pkgs/hello-nur { };
   cmake-cross = pkgs.callPackage ./pkgs/cmake-cross { };
   civetweb-dev = pkgs.callPackage ./pkgs/civetweb-dev { };
+  sqlite-dev = pkgs.callPackage ./pkgs/sqlite-dev { };
+  
 
 
 
