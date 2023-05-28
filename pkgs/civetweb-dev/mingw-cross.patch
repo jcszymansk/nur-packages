@@ -1,0 +1,30 @@
+--- a/CMakeLists.txt	2023-05-26 18:18:15
++++ b/CMakeLists.txt	2023-05-26 18:20:40
+@@ -47,7 +47,27 @@
+ set(CIVETWEB_VERSION_PATCH "${CMAKE_MATCH_3}")
+ determine_target_architecture(CIVETWEB_ARCHITECTURE)
+ include(GNUInstallDirs)
++
++if(DEFINED ENV{NIX_CC}
++  AND IS_DIRECTORY "$ENV{NIX_CC}"
++  AND EXISTS "$ENV{NIX_CC}/nix-support/orig-libc"
++  AND EXISTS "$ENV{NIX_CC}/nix-support/orig-libc-dev")
++  file(STRINGS "$ENV{NIX_CC}/nix-support/orig-libc" _nix_cmake_libc)
++  file(STRINGS "$ENV{NIX_CC}/nix-support/orig-libc-dev" _nix_cmake_libc_dev)
++else()
++  set(_nix_cmake_libc @libc_lib@)
++  set(_nix_cmake_libc_dev @libc_dev@)
++endif()
+
++list(APPEND CMAKE_SYSTEM_INCLUDE_PATH
++ "${_nix_cmake_libc_dev}/include"
++  )
++
++list(APPEND CMAKE_SYSTEM_LIBRARY_PATH
++ "${_nix_cmake_libc}/lib"
++  )
++
++
+ # CTest automation
+ option(CIVETWEB_BUILD_TESTING "Enable automated testing of civetweb" ON)
+ message(STATUS "Enabling tests in the build - ${CIVETWEB_BUILD_TESTING}")
