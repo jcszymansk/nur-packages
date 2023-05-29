@@ -1,4 +1,4 @@
-{ stdenv, civetweb }:
+{ stdenv, civetweb, writeText }:
 
 civetweb.overrideAttrs (oldAttrs: {
     pname = "civetweb-dev";
@@ -12,4 +12,10 @@ civetweb.overrideAttrs (oldAttrs: {
       "-DCIVETWEB_BUILD_TESTING=OFF"
     ];
     patches = [ ./mingw-cross.patch ];
+    setupHook = writeText "setup-hook" ''
+      CFLAGS+=" -I''${out}/include "
+      LDFLAGS+=" -L''${out}/lib -lcivetweb "
+      export CFLAGS LDFLAGS
+    '';
+
 })

@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl }:
+{ stdenv, lib, fetchurl, writeText }:
 
 let
  cc = stdenv.cc;
@@ -41,6 +41,13 @@ stdenv.mkDerivation rec {
   # remove binary & man, leave only .a & .h
   preFixup = ''
     rm -r $out/bin $out/share
+  '';
+
+  # FIXME make reusable throughout the nur
+  setupHook = writeText "setup-hook" ''
+    CFLAGS+=" -I''${out}/include "
+    LDFLAGS+=" -L''${out}/lib -lsqlite3 "
+    export CFLAGS LDFLAGS
   '';
 
   meta = {
