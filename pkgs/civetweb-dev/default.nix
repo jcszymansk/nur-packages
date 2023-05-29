@@ -1,5 +1,8 @@
-{ stdenv, civetweb, writeText }:
+{ stdenv, civetweb, pkgs }:
 
+let
+  mylib = import ../../lib { inherit pkgs; };
+in
 civetweb.overrideAttrs (oldAttrs: {
     pname = "civetweb-dev";
     cmakeFlags = [
@@ -12,10 +15,6 @@ civetweb.overrideAttrs (oldAttrs: {
       "-DCIVETWEB_BUILD_TESTING=OFF"
     ];
     patches = [ ./mingw-cross.patch ];
-    setupHook = writeText "setup-hook" ''
-      CFLAGS+=" -I''${out}/include "
-      LDFLAGS+=" -L''${out}/lib -lcivetweb "
-      export CFLAGS LDFLAGS
-    '';
+    setupHook = mylib.mkStaticSetupHook [ "civetweb" ];
 
 })

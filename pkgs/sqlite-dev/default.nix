@@ -1,7 +1,8 @@
-{ stdenv, lib, fetchurl, writeText }:
+{ stdenv, lib, fetchurl, pkgs }:
 
 let
  cc = stdenv.cc;
+ mylib = import ../../lib { inherit pkgs; };
 in
 stdenv.mkDerivation rec {
   pname = "sqlite-dev";
@@ -43,12 +44,7 @@ stdenv.mkDerivation rec {
     rm -r $out/bin $out/share
   '';
 
-  # FIXME make reusable throughout the nur
-  setupHook = writeText "setup-hook" ''
-    CFLAGS+=" -I''${out}/include "
-    LDFLAGS+=" -L''${out}/lib -lsqlite3 "
-    export CFLAGS LDFLAGS
-  '';
+  setupHook = mylib.mkStaticSetupHook [ "sqlite3" ];
 
   meta = {
     description = "SQLite is a software library that provides a relational database management system.";

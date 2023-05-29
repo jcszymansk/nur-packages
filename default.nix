@@ -8,7 +8,7 @@
 
 { pkgs ? import <nixpkgs> { } }:
 
-{
+rec {
   # The `lib`, `modules`, and `overlay` names are special
   lib = import ./lib { inherit pkgs; }; # functions
   modules = import ./modules; # NixOS modules
@@ -18,7 +18,7 @@
   cmake-cross = pkgs.callPackage ./pkgs/cmake-cross { };
   civetweb-dev = pkgs.callPackage ./pkgs/civetweb-dev { };
   sqlite-dev = pkgs.callPackage ./pkgs/sqlite-dev { };
-  
+
 
 
 
