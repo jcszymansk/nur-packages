@@ -11,8 +11,7 @@ with pkgs.lib; {
       libstr = concatStringsSep " " (map prependl libs);
     in
       pkgs.writeText "setup-hook.sh" ''
-        CFLAGS+=" -I''${out}/include "
-        LDFLAGS+=" -L''${out}/lib ${libstr} "
+        LDFLAGS+=" ${libstr} "
         export CFLAGS LDFLAGS
       '';
 }
