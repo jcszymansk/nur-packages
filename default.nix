@@ -21,6 +21,7 @@ rec {
   l8w8jwt-dev = pkgs.callPackage ./pkgs/l8w8jwt-dev { };
   civetweb-dev = pkgs.callPackage ./pkgs/civetweb-dev { };
   sqlite-dev = pkgs.callPackage ./pkgs/sqlite-dev { };
+  cjson-dev = pkgs.callPackage ./pkgs/cjson-dev { };
 
 
 
