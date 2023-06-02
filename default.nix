@@ -8,6 +8,7 @@
 
 { pkgs ? import <nixpkgs> { } }:
 
+with pkgs;
 rec {
   # The `lib`, `modules`, and `overlay` names are special
   lib = import ./lib { inherit pkgs; }; # functions
@@ -17,19 +18,6 @@ rec {
   pam-impermanence = pkgs.callPackage ./pkgs/pam-impermanence { pam = pkgs.pam; };
   # this builds all but installs only altered pam_unix
   # TODO: build only what's neded
-  pam-impermalite = pam-impermanence.overrideAttrs (prev: {
-    pname = "pam-impermalite";
-    outputs = [ "out" ];
-    installPhase = ''
-      mkdir -p $out/lib/security/
-      mod=$out/lib/security/pam_unix_symshadow.so
-      cp modules/pam_unix/.libs/pam_unix.so $mod
-
-      patchelf --set-soname pam_unix_symshadow.so $mod
-      patchelf --shrink-rpath --allowed-rpath-prefixes /nix/store $mod
-      patchelf --add-rpath $out/lib $mod
-    '';
-
-  });
+  pam-impermalite = callPackage ./pkgs/pam-impermalite { inherit pam; };
 
 }
