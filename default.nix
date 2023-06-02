@@ -14,16 +14,6 @@ rec {
   modules = import ./modules; # NixOS modules
   overlays = import ./overlays; # nixpkgs overlays
 
-  hello-nur = pkgs.callPackage ./pkgs/hello-nur { };
-  cmake-cross = pkgs.callPackage ./pkgs/cmake-cross { };
-
-  # -dev packages are static libs and headers
-  l8w8jwt-dev = pkgs.callPackage ./pkgs/l8w8jwt-dev { };
-  civetweb-dev = pkgs.callPackage ./pkgs/civetweb-dev { };
-  sqlite-dev = pkgs.callPackage ./pkgs/sqlite-dev { };
-  cjson-dev = pkgs.callPackage ./pkgs/cjson-dev { };
-
-
 
 
 }
