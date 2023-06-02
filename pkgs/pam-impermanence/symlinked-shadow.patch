@@ -1,0 +1,93 @@
+diff -ru Linux-PAM-1.5.2/modules/pam_unix/passverify.c Linux-PAM-1.5.2-new/modules/pam_unix/passverify.c
+--- Linux-PAM-1.5.2/modules/pam_unix/passverify.c	2021-09-03 13:59:07.000000000 +0200
++++ Linux-PAM-1.5.2-new/modules/pam_unix/passverify.c	2023-06-02 09:36:38.716918382 +0200
+@@ -19,6 +19,8 @@
+ #include <sys/time.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
++#include <limits.h>
++#include <stdlib.h>
+ #ifdef HAVE_CRYPT_H
+ #include <crypt.h>
+ #endif
+@@ -927,16 +929,25 @@
+     int err = 0;
+     int oldmask;
+     int wroteentry = 0;
++    char *realshadow = NULL;
++    char *tmpshadow = NULL;
++    int retval;
+ #ifdef WITH_SELINUX
+     char *prev_context_raw = NULL;
+ #endif
+ 
+     oldmask = umask(077);
++    realshadow = realpath("/etc/shadow", NULL);
++    if (realshadow == NULL) {
++	err = 1;
++	goto done;
++    }
++
+ 
+ #ifdef WITH_SELINUX
+     if (SELINUX_ENABLED) {
+       char *shadow_context_raw = NULL;
+-      if (getfilecon_raw("/etc/shadow",&shadow_context_raw)<0) {
++      if (getfilecon_raw(realshadow, &shadow_context_raw)<0) {
+ 	return PAM_AUTHTOK_ERR;
+       };
+       if (getfscreatecon_raw(&prev_context_raw)<0) {
+@@ -951,14 +962,22 @@
+       freecon(shadow_context_raw);
+     }
+ #endif
+-    pwfile = fopen(SH_TMPFILE, "w");
++    tmpshadow = malloc(strlen(realshadow) + 1);
++    if (tmpshadow == NULL) {
++	err = 1;
++	goto done;
++    }
++
++    sprintf(tmpshadow, "%sn", realshadow);
++
++    pwfile = fopen(tmpshadow, "w");
+     umask(oldmask);
+     if (pwfile == NULL) {
+ 	err = 1;
+ 	goto done;
+     }
+ 
+-    opwfile = fopen("/etc/shadow", "r");
++    opwfile = fopen(realshadow, "r");
+     if (opwfile == NULL) {
+ 	fclose(pwfile);
+ 	err = 1;
+@@ -1039,7 +1058,7 @@
+ 
+  done:
+     if (!err) {
+-	if (!rename(SH_TMPFILE, "/etc/shadow"))
++	if (!rename(tmpshadow, realshadow))
+ 	    pam_syslog(pamh,
+ 		LOG_NOTICE, "password changed for %s", forwho);
+ 	else
+@@ -1058,11 +1077,16 @@
+ #endif
+ 
+     if (!err) {
+-	return PAM_SUCCESS;
++	retval = PAM_SUCCESS;
+     } else {
+-	unlink(SH_TMPFILE);
+-	return PAM_AUTHTOK_ERR;
++	if (tmpshadow) unlink(tmpshadow);
++	retval = PAM_AUTHTOK_ERR;
+     }
++
++    if (realshadow) free(realshadow);
++    if (tmpshadow) free(tmpshadow);
++
++    return retval;
+ }
+ 
+ #ifdef HELPER_COMPILE
