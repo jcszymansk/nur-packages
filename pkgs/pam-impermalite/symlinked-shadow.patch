@@ -84,8 +84,8 @@ diff -ru Linux-PAM-1.5.2/modules/pam_unix/passverify.c Linux-PAM-1.5.2-new/modul
 +	retval = PAM_AUTHTOK_ERR;
      }
 +
-+    if (realshadow) free(realshadow);
-+    if (tmpshadow) free(tmpshadow);
++    _pam_drop(realshadow);
++    _pam_drop(tmpshadow);
 +
 +    return retval;
  }
