@@ -42,7 +42,7 @@ diff -ru Linux-PAM-1.5.2/modules/pam_unix/passverify.c Linux-PAM-1.5.2-new/modul
      }
  #endif
 -    pwfile = fopen(SH_TMPFILE, "w");
-+    tmpshadow = malloc(strlen(realshadow) + 1);
++    tmpshadow = malloc(strlen(realshadow) + 2);
 +    if (tmpshadow == NULL) {
 +	err = 1;
 +	goto done;
