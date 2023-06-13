@@ -19,5 +19,6 @@ rec {
   # this builds all but installs only altered pam_unix
   # TODO: build only what's neded
   pam-impermalite = callPackage ./pkgs/pam-impermalite { inherit pam; };
+  openconnect-sso = callPackage ./pkgs/openconnect-sso { inherit pkgs; };
 
 }
