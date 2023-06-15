@@ -19,7 +19,6 @@
         pkgs = import nixpkgs { inherit system; };
       });
       devShells = forAllSystems (system: {
-        pkgs = import nixpkgs { inherit system; };
         default = pkgs."${system}".mkShell {};
       });
     };
