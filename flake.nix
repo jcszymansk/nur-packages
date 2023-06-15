@@ -12,10 +12,15 @@
         "armv7l-linux"
       ];
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
+      pkgs = forAllSystems (system: nixpkgs.legacyPackages.${system});
     in
     {
       legacyPackages = forAllSystems (system: import ./default.nix {
         pkgs = import nixpkgs { inherit system; };
+      });
+      devShells = forAllSystems (system: {
+        pkgs = import nixpkgs { inherit system; };
+        default = pkgs."${system}".mkShell {};
       });
     };
 }
