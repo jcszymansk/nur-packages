@@ -21,4 +21,6 @@ rec {
   pam-impermalite = callPackage ./pkgs/pam-impermalite { inherit pam; };
   openconnect-sso = callPackage ./pkgs/openconnect-sso { inherit pkgs; };
 
+  apache-maven = callPackage ./pkgs/apache-maven { inherit pkgs; };
+
 }
