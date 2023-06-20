@@ -22,5 +22,6 @@ rec {
   openconnect-sso = callPackage ./pkgs/openconnect-sso { inherit pkgs; };
 
   apache-maven = callPackage ./pkgs/apache-maven { inherit pkgs; };
+  vscode-insiders = callPackage ./pkgs/vscode-insiders { inherit pkgs; };
 
 }
