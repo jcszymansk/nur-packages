@@ -16,6 +16,7 @@
     in
     {
       legacyPackages = forAllSystems (system: import ./default.nix {
+        inherit nixpkgs;
         pkgs = import nixpkgs { inherit system; config.allowUnfree = true; };
       });
       devShells = forAllSystems (system: {

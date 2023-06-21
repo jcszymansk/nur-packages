@@ -6,7 +6,7 @@
 # commands such as:
 #     nix-build -A mypackage
 
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import <nixpkgs> { } , nixpkgs ? <nixpkgs> }:
 
 with pkgs;
 rec {
@@ -22,6 +22,6 @@ rec {
   openconnect-sso = callPackage ./pkgs/openconnect-sso { inherit pkgs; };
 
   apache-maven = callPackage ./pkgs/apache-maven { inherit pkgs; };
-  vscode-insiders = callPackage ./pkgs/vscode-insiders { inherit pkgs; };
+  vscode-insiders = callPackage ./pkgs/vscode-insiders { inherit pkgs nixpkgs; };
 
 }
