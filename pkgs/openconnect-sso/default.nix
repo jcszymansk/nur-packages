@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, stdenv, ... }:
 
 let
   revision = "54263c09110125e6b78f2f46ea2ab32c6fbd49f8";
@@ -9,5 +9,6 @@ let
 in 
   (import "${upstream}/nix" { inherit pkgs; }).openconnect-sso.overrideAttrs (prev: {
     patches = [ ./profile.patch ];
+    meta = prev.meta // { broken = stdenv.isDarwin; };
   })
 
