@@ -31,12 +31,12 @@ let
     url = data.url;
     sha256 = data.sha256hash;
   };
+  executableName = "code-insiders";
 in
   callPackage "${nixpkgs}/pkgs/applications/editors/vscode/generic.nix" {
-    inherit version src;
+    inherit version src executableName;
     pname = "vscode-insiders";
 
-    executableName = "code-insiders";
     longName = "Visual Studio Code - Insiders";
     shortName = "Code - Insiders";
     inherit commandLineArgs useVSCodeRipgrep;
@@ -58,7 +58,7 @@ in
         Open source source code editor developed by Microsoft for Windows,
         Linux and macOS
       '';
-      mainProgram = "code";
+      mainProgram = executableName;
       longDescription = ''
         Open source source code editor developed by Microsoft for Windows,
         Linux and macOS. It includes support for debugging, embedded Git
