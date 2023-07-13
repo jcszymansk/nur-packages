@@ -2,6 +2,8 @@ jobs:
   updateVSCode:
     name: Update VS Code
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
     steps:
       - name: Checkout this repo
         uses: actions/checkout@v3
