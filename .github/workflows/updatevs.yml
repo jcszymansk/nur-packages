@@ -29,8 +29,6 @@ jobs:
           - ubuntu-latest
 name: Update VS Code
 "on":
-  pull_request: {}
-  push: {}
   schedule:
     - cron: 37 21 * * *
   workflow_dispatch: {}
