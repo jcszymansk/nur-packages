@@ -26,4 +26,8 @@ rec {
   apache-maven = callPackage ./pkgs/apache-maven { inherit pkgs; };
   vscode-insiders = callPackage ./pkgs/vscode-insiders { inherit pkgs nixpkgs; };
 
+  simple-time-tracker = callPackage ./pkgs/simple-time-tracker {
+    inherit (pkgs) stdenv buildNpmPackage fetchFromGitHub electron lib makeWrapper makeDesktopItem;
+  };
+
 }
