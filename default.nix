@@ -24,7 +24,10 @@ rec {
   openconnect-sso = callPackage ./pkgs/openconnect-sso { inherit pkgs; };
 
   apache-maven = callPackage ./pkgs/apache-maven { inherit pkgs; };
-  vscode-insiders = callPackage ./pkgs/vscode-insiders { inherit pkgs nixpkgs; };
+  vscode-insiders = callPackage ./pkgs/vscode-insiders {
+    inherit pkgs nixpkgs;
+    inherit (pkgs) makeDesktopItem;
+  };
 
   simple-time-tracker = callPackage ./pkgs/simple-time-tracker {
     inherit (pkgs) stdenv buildNpmPackage fetchFromGitHub electron lib makeWrapper makeDesktopItem;

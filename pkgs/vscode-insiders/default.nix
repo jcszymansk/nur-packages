@@ -4,9 +4,10 @@
 , lib
 , fetchurl
 , callPackage
+, makeDesktopItem
 , commandLineArgs ? ""
 , useVSCodeRipgrep ? stdenv.isDarwin
-, ... }:
+, ... } @ args:
 
 /*
  * cannot just override because the fhs function captures the original
@@ -32,13 +33,32 @@ let
     sha256 = data.sha256hash;
   };
   executableName = "code-insiders";
+  longName = "Visual Studio Code - Insiders";
+  shortName = "Code - Insiders";
+  defaultDesktopItem = makeDesktopItem {
+    name = executableName;
+    desktopName = longName;
+    comment = "Code Editing. Redefined.";
+    genericName = "Text Editor";
+    exec = "${executableName} %F";
+    icon = "code";
+    startupNotify = true;
+    startupWMClass = shortName;
+    categories = [ "Development" "IDE" ];
+    mimeTypes = [ ];
+    keywords = [ "vscode" ];
+    actions.new-empty-window = {
+      name = "New Empty Window";
+      exec = "${executableName} --new-window %F";
+      icon = "code";
+    };
+  };
 in
-  callPackage "${nixpkgs}/pkgs/applications/editors/vscode/generic.nix" {
+  (callPackage "${nixpkgs}/pkgs/applications/editors/vscode/generic.nix" {
     inherit version src executableName;
     pname = "vscode-insiders";
 
-    longName = "Visual Studio Code - Insiders";
-    shortName = "Code - Insiders";
+    inherit longName shortName;
     inherit commandLineArgs useVSCodeRipgrep;
 
     # We don't test vscode on CI, instead we test vscodium
@@ -72,4 +92,6 @@ in
       maintainers = [ "jacekszymanski" ];
       platforms = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" "aarch64-linux" "armv7l-linux" ];
     };
-  }
+  }).overrideAttrs (_: {
+    desktopItem = args.desktopItem ? defaultDesktopItem;
+  })
