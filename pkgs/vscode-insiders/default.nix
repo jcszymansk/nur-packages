@@ -66,7 +66,7 @@ in
 
     sourceRoot = "";
 
-    updateScript = ./update-vscode.sh;
+    updateScript = ./update.sh;
 
     # Editing the `code` binary within the app bundle causes the bundle's signature
     # to be invalidated, which prevents launching starting with macOS Ventura, because VS Code is notarized.
