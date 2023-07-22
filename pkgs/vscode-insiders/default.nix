@@ -93,5 +93,5 @@ in
       platforms = [ "x86_64-linux" "x86_64-darwin" "aarch64-darwin" "aarch64-linux" "armv7l-linux" ];
     };
   }).overrideAttrs (_: {
-    desktopItem = args.desktopItem ? defaultDesktopItem;
+    desktopItem = args.desktopItem or defaultDesktopItem;
   })
