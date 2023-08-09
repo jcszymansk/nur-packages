@@ -33,4 +33,6 @@ rec {
     inherit (pkgs) stdenv buildNpmPackage fetchFromGitHub electron lib makeWrapper makeDesktopItem;
   };
 
+  starship-with-presets = callPackage ./pkgs/starship { inherit pkgs; };
+
 }
