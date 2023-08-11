@@ -32,6 +32,7 @@ stdenv.mkDerivation {
     homepage = "https://www.betterbird.eu/";
     platforms = lib.platforms.darwin;
     maintainers = [ "jacekszymanski" ];
+    broken = !stdenv.isDarwin;
   };
 
 }
