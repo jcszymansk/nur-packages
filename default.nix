@@ -35,4 +35,6 @@ rec {
 
   starship-with-presets = callPackage ./pkgs/starship { inherit pkgs; };
 
+  betterbird-mac = callPackage ./pkgs/betterbird-mac { inherit pkgs; };
+
 }
