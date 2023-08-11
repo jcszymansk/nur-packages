@@ -1,6 +1,7 @@
 { pkgs
 , fetchurl
 , stdenv
+, lib
 , ...
 }:
 
@@ -25,5 +26,12 @@ stdenv.mkDerivation {
     mkdir -p $out/Applications
     cp -r Betterbird.app $out/Applications
   '';
+
+  meta = {
+    description = "A patched Thunderbird";
+    homepage = "https://www.betterbird.eu/";
+    platforms = lib.platforms.darwin;
+    maintainers = [ "jacekszymanski" ];
+  };
 
 }
