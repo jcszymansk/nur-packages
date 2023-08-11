@@ -1,6 +1,6 @@
 ## Starship with presets
 
-A nix build of Starship modified to expose TOML presets in `share/presets`.
+A nix build of Starship modified to expose TOML presets in `share/starship/presets`.
 
 It can then be used like this, e.g. in Home Manager:
 
@@ -12,7 +12,7 @@ in
   enable = true;
   package = starship;
   settings =
-    (with builtins; fromTOML (readFile "${starship}"/share/presets/plain-text-symbols.toml)) //
+    (with builtins; fromTOML (readFile "${starship}"/share/starship/presets/plain-text-symbols.toml)) //
     {
       # overrides here
     };
@@ -29,8 +29,8 @@ in
   enable = true;
   package = starship;
   settings = with builtins; lib.lists.foldl lib.attrsets.recursiveUpdate {} [
-    (fromTOML (readFile "${starship}/share/presets/plain-text-symbols.toml"))
-    (fromTOML (readFile "${starship}/share/presets/no-runtime-versions.toml"))
+    (fromTOML (readFile "${starship}/share/starship/presets/plain-text-symbols.toml"))
+    (fromTOML (readFile "${starship}/share/starship/presets/no-runtime-versions.toml"))
     {
       # own overrides
     }
