@@ -25,6 +25,7 @@ stdenv.mkDerivation {
   installPhase = ''
     mkdir -p $out/Applications
     cp -r Betterbird.app $out/Applications
+    cp -f ${./.}/betterbird.sh $out/Applications/Betterbird.app/Contents/MacOS/betterbird
   '';
 
   meta = {
