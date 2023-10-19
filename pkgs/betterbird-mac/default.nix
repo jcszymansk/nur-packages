@@ -5,27 +5,33 @@
 , ...
 }:
 
+let
+  data = with builtins; fromJSON (readFile ./betterbird.json);
+in
 stdenv.mkDerivation {
+  inherit (data) version;
   pname = "betterbird";
-  version = "102.14.0-bb39";
 
   # TODO allow various versions etc.
   src = fetchurl {
-    url = "https://www.betterbird.eu/downloads/MacDiskImage/betterbird-102.14.0-bb39.en-US.mac.dmg";
-    sha256 = "0rxaah7d3xsb094sphr17b4d5bnj599n9i6yw58z9572kn23yi8j";
+    inherit (data) url sha256;
   };
 
   sourceRoot = ".";
 
-  nativeBuildInputs = [ pkgs.undmg ];
+  nativeBuildInputs = with pkgs; [ undmg libplist jq ];
 
   dontConfigure = true;
   dontBuild = true;
   
   installPhase = ''
     mkdir -p $out/Applications
+    cp Betterbird.app/Contents/Info.plist ./
+    plistutil -f json < ./Info.plist | \
+      jq '. += {"LSEnvironment": {"MOZ_ALLOW_DOWNGRADE": "1", "MOZ_LEGACY_PROFILES": "1"}}' | \
+      plistutil -f binary -s > Betterbird.app/Contents/Info.plist
+    rm -f ./Info.plist
     cp -r Betterbird.app $out/Applications
-    cp -f ${./.}/betterbird.sh $out/Applications/Betterbird.app/Contents/MacOS/betterbird
   '';
 
   meta = {
