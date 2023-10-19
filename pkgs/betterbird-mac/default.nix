@@ -29,7 +29,7 @@ stdenv.mkDerivation {
     cp Betterbird.app/Contents/Info.plist ./
     plistutil -f json < ./Info.plist | \
       jq '. += {"LSEnvironment": {"MOZ_ALLOW_DOWNGRADE": "1", "MOZ_LEGACY_PROFILES": "1"}}' | \
-      plistutil -f binary -s > Betterbird.app/Contents/Info.plist
+      plistutil -f binary > Betterbird.app/Contents/Info.plist
     rm -f ./Info.plist
     cp -r Betterbird.app $out/Applications
   '';
