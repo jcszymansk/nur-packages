@@ -32,7 +32,7 @@ let
     url = data.url;
     sha256 = data.sha256hash;
   };
-  executableName = "code-insiders";
+  executableName = if stdenv.isDarwin then "code" else "code-insiders";
   longName = "Visual Studio Code - Insiders";
   shortName = "Code - Insiders";
   defaultDesktopItem = makeDesktopItem {
