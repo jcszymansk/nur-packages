@@ -6,7 +6,8 @@ tmpfile=$(mktemp -p .)
 
 curl -s -o $tmpfile https://www.betterbird.eu/downloads/sha256-"$major".txt || exit 1
 
-read sha fileraw < <(grep mac.dmg $tmpfile | head -1)
+sha=$(grep mac.dmg $tmpfile | head -1 | cut -d' ' -f1)
+fileraw=$(grep mac.dmg $tmpfile | head -1 | cut -d' ' -f2)
 
 version=$(echo $fileraw | sed -e 's/^\*betterbird-//' -e 's/\.en-US\.mac\.dmg//g')
 file=$(echo $fileraw | sed -e 's/^\*//')
