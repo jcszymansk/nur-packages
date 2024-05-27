@@ -8,7 +8,8 @@
 
 { nixpkgs ? (builtins.getFlake (toString ./.)).inputs.nixpkgs
 , pkgs ? import nixpkgs {}
-}:
+, ...
+}@args:
 
 with pkgs;
 rec {
@@ -21,7 +22,10 @@ rec {
   # this builds all but installs only altered pam_unix
   # TODO: build only what's neded
   pam-impermalite = callPackage ./pkgs/pam-impermalite { inherit pam; };
-  openconnect-sso = callPackage ./pkgs/openconnect-sso { inherit pkgs; };
+  openconnect-sso = callPackage ./pkgs/openconnect-sso {
+    inherit pkgs;
+    upstream = args.openconnect-sso;
+  };
 
   apache-maven = callPackage ./pkgs/apache-maven { inherit pkgs; };
   vscode-insiders = callPackage ./pkgs/vscode-insiders {
