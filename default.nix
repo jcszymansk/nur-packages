@@ -14,7 +14,7 @@
 with pkgs;
 rec {
   # The `lib`, `modules`, and `overlay` names are special
-  lib = import ./lib { inherit pkgs; }; # functions
+  lib = import ./lib { inherit pkgs; }; # functions # FIXME properly extend lib here
   modules = import ./modules; # NixOS modules
   overlays = import ./overlays; # nixpkgs overlays
 
@@ -40,5 +40,7 @@ rec {
   starship-with-presets = callPackage ./pkgs/starship { inherit pkgs; };
 
   betterbird-mac = callPackage ./pkgs/betterbird-mac { inherit pkgs; };
+
+  opensmtpd-filters = callPackage ./pkgs/opensmtpd-filters pkgs;
 
 }
