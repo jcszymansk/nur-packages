@@ -43,4 +43,6 @@ rec {
 
   opensmtpd-filters = callPackage ./pkgs/opensmtpd-filters pkgs;
 
+  manage = callPackage ./pkgs/manage pkgs;
+
 }
