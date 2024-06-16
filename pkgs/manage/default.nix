@@ -15,7 +15,10 @@ stdenv.mkDerivation {
   substAttrs pkgs.coreutils [
     "mktemp" "basename" "dirname"
     "realpath" "sort" "cat" "rm"
-    "head" "find" "sha1sum" "cut"
+    "head" "sha1sum" "cut"
+  ] //
+  substAttrs pkgs.findutils [
+    "find"
   ] //
   substAttrs pkgs.age [
     "age"
