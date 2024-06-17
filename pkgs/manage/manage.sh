@@ -67,7 +67,7 @@ Options:
 
 ${ME} uses the age encryption tool to encrypt and decrypt files. It expects to find
 a file named .agemaster in the directory tree where it is run, or in any parent
-directory. This file should contain the public keys of the recipients of the
+directory. This file should contain the public keys of the recipients of all the
 encrypted files. If a file named .agekey is found in the same directory as a file
 to be encrypted, or in any parent directory up to the .agemaster file, it will be
 used as an additional recipient. Additionally, for a file named <file> keys may
@@ -78,6 +78,10 @@ ${ME} is meant mainly for use with agenix (https://github.com/ryantm/agenix), wh
 master key (.agemaster) contains the public keys of repo managers, and the key files
 (.agekey) contain the public keys of individual users or systems where the secrets
 will be decrypted and used. It does not, however, require agenix to be used.
+
+Note: master keys are not actually needed, the script is intended to work just as fine
+if the .agemaster key is empty; it will only mark the directory tree boundary beyond
+which not to look for public keys.
 
 keys command will show the keys that would be used to encrypt a file, or, if <dst>
 is a directory, a new file in that directory with no dedicated .<dst>.agekey file.
