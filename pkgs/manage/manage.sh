@@ -42,6 +42,7 @@ HEAD=$(unsubsted @head@)
 FIND=$(unsubsted @find@)
 SHA1SUM=$(unsubsted @sha1sum@)
 CUT=$(unsubsted @cut@)
+TR=$(unsubsted @tr@)
 
 AGE=$(unsubsted @age@)
 
@@ -115,7 +116,7 @@ function search_up {
     if [ -s "${dir}/.agekey" ]; then
       keys+="$("$CAT" "${dir}/.agekey")"$'\n'
     fi
-    if [ -s "${dir}/.agemaster" ]; then
+    if [ -f "${dir}/.agemaster" ]; then
       keys+=$("$CAT" "${dir}/.agemaster")$'\n'
       break
     fi
@@ -176,7 +177,7 @@ function encrypt_file {
 
 function is_encrypted {
   file="$1"
-  header=$("$HEAD" -n 1 "$file")
+  header=$("$HEAD" -c 38 "$file" | "$TR" -d '\0' | "$HEAD" -n 1)
   if [[ "$header" == "-----BEGIN AGE ENCRYPTED FILE-----" ]]; then
     return 0
   elif [[ "$header" =~ ^age-encryption.org/[[:alnum:]]+$ ]]; then
