@@ -16,7 +16,7 @@ buildNpmPackage rec {
     owner = "jacekszymanski";
     repo = pname;
     rev = "master";
-    hash = "sha256-lwHOs4mu5+sh2S2V6hvgxfX221hmOXg6mJhr5TkLWlY=";
+    hash = "sha256-txbrZ4a76fLCdK//fqbdF2sczJsgO5B088BirVFxe18=";
   };
 
   npmDepsHash = "sha256-NNdoILe3N7+qplytZMaQcfrk7vbzIAFgRS3yKZ0bJfg=";
