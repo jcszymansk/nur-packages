@@ -45,4 +45,6 @@ rec {
 
   manage = callPackage ./pkgs/manage pkgs;
 
+  s-mailx = callPackage ./pkgs/s-mailx pkgs;
+
 }
