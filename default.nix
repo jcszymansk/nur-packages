@@ -6,8 +6,7 @@
 # commands such as:
 #     nix-build -A mypackage
 
-{ nixpkgs ? (builtins.getFlake (toString ./.)).inputs.nixpkgs
-, pkgs ? import nixpkgs {}
+{ pkgs ? import nixpkgs {}
 , ...
 }@args:
 
