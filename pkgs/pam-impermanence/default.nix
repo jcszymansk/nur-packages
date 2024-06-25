@@ -3,4 +3,5 @@
 pam.overrideAttrs (prev: {
   pname = "pam-impermanence";
   patches = prev.patches ++ [ ./symlinked-shadow.patch ];
+  meta.broken = true;
 })

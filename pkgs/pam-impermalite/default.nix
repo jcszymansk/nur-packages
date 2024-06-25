@@ -14,4 +14,7 @@ pam.overrideAttrs (prev: {
     mod=$out/lib/security/pam_unix.so
     patchelf --add-rpath ${pam}/lib $mod
   '';
+
+  meta.broken = true;
+
 })

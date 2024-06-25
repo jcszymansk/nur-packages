@@ -25,6 +25,7 @@
         inherit nixpkgs;
         inherit (inputs.openconnect-sso.packages."${system}") openconnect-sso;
         pkgs = pkgs."${system}";
+        fromFlake = true;
       });
       devShells = forAllSystems (system: {
         default = pkgs."${system}".mkShell {};
