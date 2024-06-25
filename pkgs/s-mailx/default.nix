@@ -1,4 +1,7 @@
-{ pkgs, lib, stdenv, fetchgit, ... }:
+{ pkgs, lib, stdenv, fetchgit
+, sendmail ? "/run/wrappers/bin/sendmail" # default on NixOS
+,  ...
+}:
 
 stdenv.mkDerivation rec {
   pname = "s-mailx";
@@ -10,7 +13,7 @@ stdenv.mkDerivation rec {
   };
 
   configurePhase = ''
-    make config CONFIG=NULLI VAL_PREFIX=""
+    make config CONFIG=NULLI VAL_PREFIX="" VAL_MTA=${sendmail}
     '';
 
   buildPhase = ''
