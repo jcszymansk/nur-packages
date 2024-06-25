@@ -1,9 +1,6 @@
 {
   description = "My personal NUR repository";
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-  inputs.openconnect-sso = {
-    url = "github:jacekszymanski/openconnect-sso";
-  };
   outputs = { self, nixpkgs, ... }@inputs:
     let
       systems = [
@@ -22,8 +19,6 @@
     in
     {
       legacyPackages = forAllSystems (system: import ./default.nix {
-        inherit nixpkgs;
-        inherit (inputs.openconnect-sso.packages."${system}") openconnect-sso;
         pkgs = pkgs."${system}";
         fromFlake = true;
       });
