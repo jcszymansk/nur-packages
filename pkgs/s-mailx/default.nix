@@ -5,11 +5,11 @@
 
 stdenv.mkDerivation rec {
   pname = "s-mailx";
-  version = "14.9.24";
+  version = "14.9.25";
   src = fetchgit {
     url = "https://git.sdaoden.eu/scm/s-nail.git";
-    branchName = "stable/stable";
-    sha256 = "sha256-Za7EV5EGMN0a2zUmn67sztkaRZxgiH1uCgtuE0lDTEw=";
+    rev = "refs/tags/v${version}";
+    sha256 = "0z3w7a7cafrkrlrikccivzlzz1nw3i6i4z35j35kj5a2pg9h9ign";
   };
 
   configurePhase = ''
