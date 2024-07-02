@@ -11,36 +11,16 @@
 , ...
 }@args:
 
-
 let
-  dummyPackage = pkgs.hello;
+  lib = pkgs.lib // (import ./lib pkgs);
+  foundPkgs = with lib; flattenTree (rakeLeaves ./pkgs);
+  readyPkgs = lib.mapAttrs (name: path: pkgs.callPackage path pkgs) foundPkgs;
 in
-with pkgs;
+readyPkgs //
 {
   # The `lib`, `modules`, and `overlay` names are special
-  lib = import ./lib { inherit pkgs; }; # functions # FIXME properly extend lib here
+  inherit lib;
   modules = import ./modules; # NixOS modules
   overlays = import ./overlays; # nixpkgs overlays
-
-  pam-impermanence = pkgs.callPackage ./pkgs/pam-impermanence { pam = pkgs.pam; };
-  # this builds all but installs only altered pam_unix
-  # TODO: build only what's neded
-  pam-impermalite = callPackage ./pkgs/pam-impermalite { inherit pam; };
-
-  vscode-insiders = callPackage ./pkgs/vscode-insiders {
-    inherit pkgs;
-  };
-
-  simple-time-tracker = callPackage ./pkgs/simple-time-tracker {
-    inherit (pkgs) stdenv buildNpmPackage fetchFromGitHub electron lib makeWrapper makeDesktopItem;
-  };
-
-  betterbird-mac = callPackage ./pkgs/betterbird-mac { inherit pkgs; };
-
-  opensmtpd-filters = callPackage ./pkgs/opensmtpd-filters pkgs;
-
-  manage = callPackage ./pkgs/manage pkgs;
-
-  s-mailx = callPackage ./pkgs/s-mailx pkgs;
 
 }
