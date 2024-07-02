@@ -12,15 +12,14 @@
 }@args:
 
 let
-  lib = pkgs.lib // (import ./lib pkgs);
-  foundPkgs = with lib; flattenTree (rakeLeaves ./pkgs);
-  readyPkgs = lib.mapAttrs (name: path: pkgs.callPackage path pkgs) foundPkgs;
+  lib = pkgs.lib // (import ./lib pkgs.lib);
+  readyPkgs = lib.loaddir (_: path: pkgs.callPackage path pkgs) ./pkgs;
 in
 readyPkgs //
 {
   # The `lib`, `modules`, and `overlay` names are special
   inherit lib;
-  modules = import ./modules; # NixOS modules
+  modules = lib.loaddir (_: path: path) ./modules; # modules
   overlays = import ./overlays; # nixpkgs overlays
 
 }

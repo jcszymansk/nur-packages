@@ -1,5 +1,5 @@
 # https://github.com/bangedorrunt/nix/blob/a4b5e1d80f13307a725eeec0bc7ecd9c7c49da20/lib/importers.nix
-{lib, ...}: let
+lib: let
   flattenTree =
     /*
     *

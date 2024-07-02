@@ -16,6 +16,7 @@
           inherit system;
           config.allowUnfree = true;
       });
+      lib = nixpkgs.lib // (import ./lib nixpkgs.lib);
     in
     {
       legacyPackages = forAllSystems (system: import ./default.nix {
@@ -25,5 +26,6 @@
       devShells = forAllSystems (system: {
         default = pkgs."${system}".mkShell {};
       });
+      modules = lib.loaddir (_: path: path) ./modules;
     };
 }
