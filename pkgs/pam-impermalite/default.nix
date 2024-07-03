@@ -1,4 +1,4 @@
-{ pam }:
+{ pam, ... }:
 
 pam.overrideAttrs (prev: {
   pname = "pam-impermalite";
