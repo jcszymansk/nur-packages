@@ -13,7 +13,7 @@
 
 let
   lib = pkgs.lib // (import ./lib pkgs.lib);
-  readyPkgs = lib.loaddir (_: path: pkgs.callPackage path pkgs) ./pkgs;
+  readyPkgs = lib.loaddir (_: path: import path pkgs) ./pkgs;
 in
 readyPkgs //
 {
