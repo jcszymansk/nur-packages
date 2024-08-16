@@ -33,5 +33,10 @@ EOF
   dontBuild = true;
   dontCheck = true;
   dontFixup = true;
+
+  meta = {
+    description = "Apache Camel Language Server Protocol";
+    mainProgram = "${pname}";
+  };
 }
 
