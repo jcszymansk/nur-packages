@@ -1,7 +1,13 @@
 {
   description = "My personal NUR repository";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-  outputs = { self, nixpkgs, ... }@inputs:
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    gradle2nix = {
+      url = "github:tadfisher/gradle2nix/v2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
+  outputs = { self, nixpkgs, gradle2nix, ... }@inputs:
     let
       systems = [
         "x86_64-linux"
@@ -20,7 +26,7 @@
     in
     {
       legacyPackages = forAllSystems (system: import ./default.nix {
-        pkgs = pkgs."${system}";
+        pkgs = pkgs."${system}" // gradle2nix.builders."${system}";
         fromFlake = true;
       });
       devShells = forAllSystems (system: {
