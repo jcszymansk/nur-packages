@@ -1,8 +1,17 @@
-{ lib, openjdk_headless, buildGradlePackage, fetchFromGitHub, ... }:
+/*
+ * This package can be built only from the flake!
+ * Building with `nix-build` will not work.
+ */
+{ stdenv
+, lib
+, openjdk_headless
+, buildGradlePackage ? stdenv.mkDerivation
+, fetchFromGitHub
+, ... }:
 
 buildGradlePackage rec {
   pname = "groovyls";
-  version = "unstable-2024-06-28"; #
+  version = "unstable-2024-06-28";
   src = fetchFromGitHub {
     owner = "GroovyLanguageServer";
     repo = "groovy-language-server";
@@ -22,4 +31,13 @@ exec ${lib.getExe openjdk_headless} -jar $out/share/java/groovyls.jar "\$@"
 EOF
     chmod +x $out/bin/${pname}
   '';
+
+  passthru.skipCi = true;
+
+  meta = with lib; {
+    description = "Groovy Language Server";
+    maintainers = [ "jcszymansk" ];
+    license = licenses.asl20;
+    mainProgram = pname;
+  };
 }
