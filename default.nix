@@ -6,9 +6,7 @@
 # commands such as:
 #     nix-build -A mypackage
 
-{ pkgs
-  ? (import <nixpkgs> {} //
-     import (builtins.fetchTarball "https://github.com/tadfisher/gradle2nix/archive/v2.tar.gz") {})
+{ pkgs ? import <nixpkgs> {} 
 , fromFlake ? false
 , ...
 }@args:

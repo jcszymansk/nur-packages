@@ -15,8 +15,9 @@ with builtins;
 let
   isReserved = n: n == "lib" || n == "overlays" || n == "modules";
   isDerivation = p: isAttrs p && p ? type && p.type == "derivation";
+  isSkip = p: p.skipCi or false;
   isPlatform = p: with pkgs; any (pp: system == pp) (p.meta.platforms or lib.platforms.all);
-  isBuildable = p: isPlatform p && !(p.meta.broken or false) && p.meta.license.free or true;
+  isBuildable = p: isPlatform p && !(p.meta.broken or false) && p.meta.license.free or true && (!isSkip p);
   isCacheable = p: !(p.preferLocalBuild or false);
   shouldRecurseForDerivations = p: isAttrs p && p.recurseForDerivations or false;
 
