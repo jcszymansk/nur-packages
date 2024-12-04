@@ -1,13 +1,15 @@
-{ stdenv
-, buildNpmPackage
-, electron
+{ buildNpmPackage
 , fetchFromGitHub
 , makeWrapper
 , makeDesktopItem
 , lib
+, pkgs
 , ...
 }: 
 
+let
+  electron = pkgs.electron_30;
+in
 buildNpmPackage rec {
   pname = "simple-time-tracker";
   version = "1.0.0";
