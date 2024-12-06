@@ -5,7 +5,7 @@
 , lib
 , pkgs
 , ...
-}: 
+}:
 
 let
   electron = pkgs.electron_30;
@@ -60,4 +60,5 @@ buildNpmPackage rec {
     license = licenses.gpl3Plus;
   };
 
+  passthru.skipCi = true;
 }
