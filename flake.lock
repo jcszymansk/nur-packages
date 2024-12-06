@@ -26,32 +26,32 @@
         ]
       },
       "locked": {
-        "lastModified": 1721151836,
-        "narHash": "sha256-v6O9fE2GBoo/i4qrc5co7KckIv5TTamRXrdltjal1Yw=",
-        "owner": "tadfisher",
+        "lastModified": 1728988573,
+        "narHash": "sha256-UPRvX7wM5axBhcLhoUugOO8Zd40tEInmI76Gd7XkQK4=",
+        "owner": "milahu",
         "repo": "gradle2nix",
-        "rev": "b33693bc6b6ebd1c3633435d9d0833f665fb12d1",
+        "rev": "8f203488797538001216d35eb5b315aa2b49fa14",
         "type": "github"
       },
       "original": {
-        "owner": "tadfisher",
-        "ref": "v2",
+        "owner": "milahu",
+        "ref": "pull69-patch1",
         "repo": "gradle2nix",
         "type": "github"
       }
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1723688146,
-        "narHash": "sha256-sqLwJcHYeWLOeP/XoLwAtYjr01TISlkOfz+NG82pbdg=",
+        "lastModified": 1733412085,
+        "narHash": "sha256-FillH0qdWDt/nlO6ED7h4cmN+G9uXwGjwmCnHs0QVYM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c3d4ac725177c030b1e289015989da2ad9d56af0",
+        "rev": "4dc2fc4e62dbf62b84132fe526356fbac7b03541",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-24.05",
+        "ref": "nixos-24.11",
         "repo": "nixpkgs",
         "type": "github"
       }

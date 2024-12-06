@@ -19,10 +19,12 @@ buildGradlePackage rec {
     sha256 = "1s32xwkf0697ak43mwnm22hvx962radramlq4fsw48sxgqckk9l5";
   };
   lockFile = ./gradle.lock;
-  gradleBuildFlags = [ "build" ];
+
+  gradleBuildTask = "shadowJar";
 
   installPhase = ''
     mkdir -p $out/share/java
+    ls -l build/libs
     cp build/libs/source-all.jar $out/share/java/groovyls.jar
     mkdir -p $out/bin
     cat > $out/bin/${pname} <<EOF
