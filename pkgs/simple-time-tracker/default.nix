@@ -8,7 +8,8 @@
 }:
 
 let
-  electron = pkgs.electron_30;
+  ignoringVulns = x: x // { meta = (x.meta // { knownVulnerabilities = []; }); };
+  electron = pkgs.electron_30.overrideAttrs ignoringVulns;
 in
 buildNpmPackage rec {
   pname = "simple-time-tracker";
