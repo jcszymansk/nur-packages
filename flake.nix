@@ -1,9 +1,10 @@
 {
   description = "My personal NUR repository";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     gradle2nix = {
-      url = "github:tadfisher/gradle2nix/v2";
+      url = "github:milahu/gradle2nix/pull69-patch1";
+      #url = "github:tadfisher/gradle2nix/v2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
