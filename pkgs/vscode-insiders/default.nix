@@ -24,7 +24,8 @@ let
 in
   (vscode.override {
     isInsiders = true;
-  }).overrideAttrs (_: {
+  }).overrideAttrs (prev: {
     inherit src version;
     pname = "vscode-insiders";
+    meta = prev.meta // { mainProgram = "code-insiders"; };
   })
