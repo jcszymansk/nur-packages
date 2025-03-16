@@ -171,8 +171,17 @@ function encrypt_file {
 
   #dbg "$keys"
 
-  # FIXME protect against overwriting the destination file in case of an error
-  dbg_cmd "$AGE" --encrypt --recipients-file <(echo "$keys") -o "$dst" "$src"
+  # Create a temporary file for the encrypted output
+  tmp_dst="$(umask 077 && "$MKTEMP")"
+  
+  # Encrypt to the temporary file first
+  if dbg_cmd "$AGE" --encrypt --recipients-file <(echo "$keys") -o "$tmp_dst" "$src"; then
+    # Only move to destination if encryption succeeded
+    mv "$tmp_dst" "$dst"
+  else
+    "$RM" -f "$tmp_dst"
+    error "Failed to encrypt $src to $dst"
+  fi
 }
 
 function is_encrypted {
