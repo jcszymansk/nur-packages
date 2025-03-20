@@ -4,6 +4,7 @@
 , makeDesktopItem
 , lib
 , pkgs
+, fromFlake ? false
 , ...
 }:
 
@@ -58,6 +59,7 @@ buildNpmPackage rec {
     description = "Simple Time Tracker";
     maintainers = [ "jacekszymanski" ];
     platforms = platforms.unix;
+    broken = !fromFlake;
     license = licenses.gpl3Plus;
   };
 

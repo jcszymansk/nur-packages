@@ -6,14 +6,14 @@
 # commands such as:
 #     nix-build -A mypackage
 
-{ pkgs ? import <nixpkgs> {} 
+{ pkgs ? import <nixpkgs> {}
 , fromFlake ? false
 , ...
 }@args:
 
 let
   lib = pkgs.lib // (import ./lib pkgs.lib);
-  readyPkgs = lib.loaddir (_: path: import path pkgs) ./pkgs;
+  readyPkgs = lib.loaddir (_: path: import path (pkgs // { inherit fromFlake; })) ./pkgs;
 in
 readyPkgs //
 {
