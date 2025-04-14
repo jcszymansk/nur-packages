@@ -15,11 +15,6 @@ let
       python3
     ];
 
-    nativeBuildInputs = [ makeWrapper ];
-
-    postInstall = ''
-      wrapProgram $out/bin/${pname} --set AIDER_DESK_NO_AUTO_UPDATE true
-    '';
   };
 in
 stdenv.mkDerivation {
@@ -40,6 +35,6 @@ stdenv.mkDerivation {
     ln -s ${aider-desk-raw}/bin/${pname} $out/bin/${pname}
     wrapProgram $out/bin/${pname} \
       --set AIDER_DESK_NO_AUTO_UPDATE true \
-      --run "${coreutils}/bin/chmod -R u+w \''${XDG_CONFIG_HOME:-\$HOME/.config}/${pname}" \
+      --run "${coreutils}/bin/chmod -R u+w \''${XDG_CONFIG_HOME:-\$HOME/.config}/${pname}"
   '';
 }
