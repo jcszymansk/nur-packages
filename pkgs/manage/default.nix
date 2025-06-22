@@ -1,4 +1,4 @@
-{ pkgs, lib, stdenv, substituteAll, ... }:
+{ pkgs, lib, stdenv, replaceVars, ... }:
 
 let
   substAttrs = pkg: bins: builtins.listToAttrs (map (name: {
@@ -9,9 +9,7 @@ in
 stdenv.mkDerivation {
   pname = "manage";
   version = "0.1.0";
-  src = substituteAll ({
-    src = ./manage.sh;
-  } //
+  src = replaceVars ./manage.sh (
   substAttrs pkgs.coreutils [
     "mktemp" "basename" "dirname"
     "realpath" "sort" "cat" "rm"
