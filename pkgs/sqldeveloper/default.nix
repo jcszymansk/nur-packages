@@ -26,9 +26,9 @@ stdenv.mkDerivation rec {
   desktopItem = makeDesktopItem {
     desktopName = "SQL Developer";
     name = "sqldeveloper";
-    exec = "sqldeveoper.sh";
+    exec = "sqldeveloper";
     icon = "sqldeveloper";
-    categories = [ "Development" "Database" ];
+    categories = [ "Development" ];
   };
 
   installPhase = ''
