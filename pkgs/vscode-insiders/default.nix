@@ -1,6 +1,8 @@
 { stdenv
 , vscode
 , fetchurl
+, libsoup_3
+, webkitgtk_4_1
 , ... } @ args:
 
 let
@@ -27,5 +29,6 @@ in
   }).overrideAttrs (prev: {
     inherit src version;
     pname = "vscode-insiders";
+    buildInputs = prev.buildInputs ++ [ libsoup_3 webkitgtk_4_1 ];
     meta = prev.meta // { mainProgram = "code-insiders"; };
   })
