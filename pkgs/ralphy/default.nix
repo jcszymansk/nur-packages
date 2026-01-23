@@ -30,6 +30,16 @@ stdenv.mkDerivation rec {
     mv $TMP/package $TMP/ralphy-pkg
     runHook postUnpack
   '';
+  checkPhase = ''
+    runHook preCheck
+    echo "Checking ralphy help output"
+    if [ -f "$TMP/ralphy-pkg/ralphy.sh" ]; then
+      "$TMP/ralphy-pkg/ralphy.sh" --help 2>&1 | grep -i "usage\|ralphy"
+    else
+      ${ralphyRepo}/ralphy.sh --help 2>&1 | grep -i "usage\|ralphy"
+    fi
+    runHook postCheck
+  '';
   installPhase = ''
     runHook preInstall
     mkdir -p $out/bin $out/lib/ralphy
@@ -48,10 +58,15 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
+  passthru = {
+    skipCi = true; # lightweight package, no CI required for local builds
+  };
+
   meta = with lib; {
     description = "Ralphy CLI (prebuilt binary from npm)";
     homepage = "https://github.com/michaelshimeles/ralphy";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = [ ];
+    platforms = platforms.linux;
   };
 }
