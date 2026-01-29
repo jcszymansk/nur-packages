@@ -2,7 +2,7 @@
   description = "My personal NUR repository";
   inputs = {
     # TODO add pinned 24.11 for electron_30, needed for simple-time-tracker
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     gradle2nix = {
       url = "github:milahu/gradle2nix/pull69-patch1";
