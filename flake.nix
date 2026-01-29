@@ -3,13 +3,14 @@
   inputs = {
     # TODO add pinned 24.11 for electron_30, needed for simple-time-tracker
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     gradle2nix = {
       url = "github:milahu/gradle2nix/pull69-patch1";
       #url = "github:tadfisher/gradle2nix/v2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, gradle2nix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, gradle2nix, ... }@inputs:
     let
       systems = [
         "x86_64-linux"
@@ -23,6 +24,13 @@
       pkgs = forAllSystems (system: import nixpkgs {
           inherit system;
           config.allowUnfree = true;
+          overlays = [
+            (final: prev: {
+              rustPlatform = (import nixpkgs-unstable {
+                inherit system;
+              }).rustPlatform;
+            })
+          ];
       });
       lib = nixpkgs.lib // (import ./lib nixpkgs.lib);
     in
