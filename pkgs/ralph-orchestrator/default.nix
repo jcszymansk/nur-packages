@@ -34,4 +34,6 @@ rustPlatform.buildRustPackage rec {
     maintainers = [ ];
     platforms = platforms.linux ++ platforms.darwin;
   };
+
+  passthru.skipCi = true;
 }
