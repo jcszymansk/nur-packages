@@ -8,13 +8,13 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "ralph-orchestrator";
-  version = "2.3.1";
+  version = "2.4.4";
 
   src = fetchFromGitHub {
     owner = "mikeyobrien";
     repo = "ralph-orchestrator";
     rev = "v${version}";
-    hash = "sha256-olykm4EMD0Zv5lG8YGIeSVghafjLuRDcCESo3Utvb+Y=";
+    hash = "sha256-JsaI6Z8ylmI0KmtmuBkRZnqK7McEI/EusLaDOjDDMCo=";
   };
 
   cargoLock = {
