@@ -5,9 +5,19 @@
 , ...
 }:
 
+let mysqlcl = sqlcl.overrideAttrs (_: {
+  installPhase = ''
+    mkdir -p $out/libexec
+    mv * $out/libexec/
+
+    makeWrapper $out/libexec/bin/sql $out/bin/sqlcl \
+      --set JAVA_HOME ${jdk.home}
+  '';
+});
+in
 symlinkJoin {
   name = "sqlcl-${sqlcl.version}-with-utils";
-  paths = [ sqlcl ];
+  paths = [ mysqlcl ];
 
   nativeBuildInputs = [ makeWrapper ];
 
