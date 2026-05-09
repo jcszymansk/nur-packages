@@ -5,6 +5,7 @@
   maven,
   makeWrapper,
   jre,
+  sqlcl,
   ...
 }:
 
@@ -38,6 +39,7 @@ maven.buildMavenPackage rec {
 
     mkdir -p $out/libexec
     cp -r target/appassembler/. $out/libexec/
+    cp ${sqlcl}/libexec/lib/oraclepki.jar $out/libexec/lib/
 
     mkdir -p $out/bin
     makeWrapper $out/libexec/bin/utplsql $out/bin/utplsql \
