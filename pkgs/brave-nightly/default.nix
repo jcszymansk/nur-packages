@@ -1,11 +1,13 @@
 { brave, fetchurl, ... }:
 
+let
+  release = builtins.fromJSON (builtins.readFile ./latest-linux-x64.json);
+in
 brave.overrideAttrs (oldAttrs: {
   pname = "brave-nightly";
-  version = "1.92.99";
+  version = release.version;
   src = fetchurl {
-    url = "https://github.com/brave/brave-browser/releases/download/v1.92.99/brave-browser-nightly_1.92.99_amd64.deb";
-    sha256 = "sha256-yrm/T+z/696w75lwir1ertCucFD9ToQVE43Q3kJj2zE=";
+    inherit (release) url sha256;
   };
 
   installPhase = builtins.replaceStrings
@@ -43,6 +45,10 @@ brave.overrideAttrs (oldAttrs: {
   installCheckPhase = ''
     $out/opt/brave.com/brave-nightly/brave --version
   '';
+
+  passthru = oldAttrs.passthru // {
+    updateScript = ./update.sh;
+  };
 
   meta = oldAttrs.meta // {
     mainProgram = "brave-nightly";
