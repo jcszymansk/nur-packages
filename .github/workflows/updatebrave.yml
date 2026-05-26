@@ -1,0 +1,39 @@
+---
+name: Update Brave Nightly
+"on":
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  updateBraveNightly:
+    name: Update Brave Nightly
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v6
+      - name: Install nix
+        uses: cachix/install-nix-action@v30
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Config git for github-actions
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+      - name: Update Brave Nightly
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: nix shell nixpkgs#jq -c ./pkgs/brave-nightly/update.sh
+      - name: Commit and push changes
+        run: |
+          changes="$(git status --porcelain \
+            pkgs/brave-nightly/latest-linux-x64.json)"
+          if [ -n "$changes" ]; then
+            git add pkgs/brave-nightly/latest-linux-x64.json
+            git commit -m "action: update brave-nightly"
+            git push
+          fi
