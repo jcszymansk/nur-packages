@@ -30,5 +30,14 @@ in
     inherit src version;
     pname = "vscode-insiders";
     buildInputs = prev.buildInputs ++ [ libsoup_3 webkitgtk_4_1 ];
+    autoPatchelfIgnoreMissingDeps = (prev.autoPatchelfIgnoreMissingDeps or []) ++ [
+      "libc.musl-x86_64.so.1"
+    ];
+    postPatch = ''
+      if [ -d resources/app ]; then
+        mkdir -p resources/app/node_modules/@vscode/ripgrep/bin
+        touch resources/app/node_modules/@vscode/ripgrep/bin/rg
+      fi
+    '' + (prev.postPatch or "");
     meta = prev.meta // { mainProgram = "code-insiders"; };
   })
