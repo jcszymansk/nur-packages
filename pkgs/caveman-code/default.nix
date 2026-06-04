@@ -1,14 +1,14 @@
 { buildNpmPackage
 , fetchurl
 , lib
-, nodejs_20
+, nodejs_24
 , node-gyp
 , python3
 , ...
 }:
 
 let
-  buildNpmPackage' = buildNpmPackage.override { nodejs = nodejs_20; };
+  buildNpmPackage' = buildNpmPackage.override { nodejs = nodejs_24; };
 in
 buildNpmPackage' rec {
   pname = "caveman-code";
@@ -19,7 +19,7 @@ buildNpmPackage' rec {
     sha256 = "sha256-p1U3iw45xpIoXO1SAeq0fCgUnouEzovaS12gWO9Xi6o=";
   };
 
-  npmDepsHash = "sha256-jt4Cnusr7Xryb3duahtkE260jAy9P6ziFTcE2gBW/7Q=";
+  npmDepsHash = "sha256-3yGB6PeHp1e74ZWmbT0ik3kjzV594dntgXDpzSszfqc=";
   dontNpmBuild = true;
   makeCacheWritable = true;
 
@@ -30,7 +30,10 @@ buildNpmPackage' rec {
       /"node_modules\/onnxruntime-node": \{/ { skip = 1; next }
       skip && /^[[:space:]]*},$/ { skip = 0; next }
       !skip { print }
-    ' package-lock.json | grep -v '"onnxruntime-common": "1.26.0"' > package-lock.json.tmp
+    ' package-lock.json \
+      | grep -v '"onnxruntime-common": "1.26.0"' \
+      | grep -v '"onnxruntime-node": "\^1.20.0"' \
+      > package-lock.json.tmp
     mv package-lock.json.tmp package-lock.json
   '';
 
