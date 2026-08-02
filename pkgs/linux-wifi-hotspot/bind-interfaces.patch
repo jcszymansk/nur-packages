@@ -45,7 +45,7 @@ index edc610f..5e9eef7 100755
          --redirect-to-localhost)
              shift
              REDIRECT_TO_LOCALHOST=1
-@@ -1775,10 +1781,14 @@ if [[ "$SHARE_METHOD" == "bridge" ]]; then
+@@ -1775,22 +1781,27 @@ if [[ "$SHARE_METHOD" == "bridge" ]]; then
      echo "bridge=${BRIDGE_IFACE}" >> $CONFDIR/hostapd.conf
  elif [[ $NO_DNSMASQ -eq 0 ]]; then
      # dnsmasq config (dhcp + dns)
@@ -64,8 +64,9 @@ index edc610f..5e9eef7 100755
 +            DNSMASQ_BIND=bind-dynamic
 +        fi
      fi
-
-@@ -1788,9 +1798,10 @@ elif [[ $NO_DNSMASQ -eq 0 ]]; then
+     if [[ "$DHCP_DNS" == "gateway" ]]; then
+         DHCP_DNS="$GATEWAY"
+     fi
      cat << EOF > $CONFDIR/dnsmasq.conf
  listen-address=${GATEWAY}
  ${DNSMASQ_BIND}
