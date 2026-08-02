@@ -1,0 +1,66 @@
+diff --git a/src/scripts/create_ap b/src/scripts/create_ap
+index edc610f..5e9eef7 100755
+--- a/src/scripts/create_ap
++++ b/src/scripts/create_ap
+@@ -81,6 +81,7 @@ usage() {
+     echo "Non-Bridging Options:"
+     echo "  --no-dns                Disable dnsmasq DNS server"
+     echo "  --no-dnsmasq            Disable dnsmasq server completely"
++    echo "  --bind-interfaces        Force dnsmasq to bind only configured interfaces"
+     echo "  -g <gateway>            IPv4 Gateway for the Access Point (default: 192.168.12.1)"
+     echo "  -d                      DNS server will take into account /etc/hosts"
+     echo "  -e <hosts_file>         DNS server will take into account additional hosts file"
+@@ -643,5 +644,6 @@ ADDN_HOSTS=
+ DHCP_DNS=gateway
+ NO_DNS=0
+ NO_DNSMASQ=0
++BIND_INTERFACES=0
+ DNS_PORT=
+ HIDDEN=0
+@@ -669,6 +671,6 @@ HOSTAPD_DEBUG_ARGS=
+ REDIRECT_TO_LOCALHOST=0
+ 
+-CONFIG_OPTS=(CHANNEL GATEWAY WPA_VERSION ETC_HOSTS DHCP_DNS NO_DNS NO_DNSMASQ HIDDEN MAC_FILTER MAC_FILTER_ACCEPT ISOLATE_CLIENTS
++CONFIG_OPTS=(CHANNEL GATEWAY WPA_VERSION ETC_HOSTS DHCP_DNS NO_DNS NO_DNSMASQ BIND_INTERFACES HIDDEN MAC_FILTER MAC_FILTER_ACCEPT ISOLATE_CLIENTS
+              SHARE_METHOD IEEE80211N IEEE80211AC IEEE80211AX HT_CAPAB VHT_CAPAB DRIVER NO_VIRT COUNTRY FREQ_BAND
+              NEW_MACADDR DAEMONIZE DAEMON_PIDFILE DAEMON_LOGFILE DNS_LOGFILE NO_HAVEGED WIFI_IFACE INTERNET_IFACE
+              SSID PASSPHRASE USE_PSK ADDN_HOSTS)
+@@ -1074,7 +1076,7 @@ for ((i=0; i<${#ARGS[@]}; i++)); do
+     fi
+ done
+ 
+-GETOPT_ARGS=$(getopt -o hc:w:g:de:nm: -l "help","hidden","hostapd-debug:","hostapd-timestamps","redirect-to-localhost","mac-filter","mac-filter-accept:","isolate-clients","ieee80211n","ieee80211ac","ieee80211ax","ht_capab:","vht_capab:","driver:","no-virt","fix-unmanaged","country:","freq-band:","mac:","dhcp-dns:","daemon","pidfile:","logfile:","dns-logfile:","stop:","list","list-running","list-clients:","version","psk","no-haveged","no-dns","no-dnsmasq","mkconfig:","config:" -n "$PROGNAME" -- "$@")
++GETOPT_ARGS=$(getopt -o hc:w:g:de:nm: -l "help","hidden","hostapd-debug:","hostapd-timestamps","redirect-to-localhost","mac-filter","mac-filter-accept:","isolate-clients","ieee80211n","ieee80211ac","ieee80211ax","ht_capab:","vht_capab:","driver:","no-virt","fix-unmanaged","country:","freq-band:","mac:","dhcp-dns:","daemon","pidfile:","logfile:","dns-logfile:","stop:","list","list-running","list-clients:","version","psk","no-haveged","no-dns","no-dnsmasq","bind-interfaces","mkconfig:","config:" -n "$PROGNAME" -- "$@")
+ [[ $? -ne 0 ]] && exit 1
+ eval set -- "$GETOPT_ARGS"
+ 
+@@ -1249,6 +1251,10 @@ while :; do
+             shift
+             NO_DNSMASQ=1
+             ;;
++        --bind-interfaces)
++            shift
++            BIND_INTERFACES=1
++            ;;
+         --redirect-to-localhost)
+             shift
+             REDIRECT_TO_LOCALHOST=1
+@@ -1775,10 +1781,14 @@ if [[ "$SHARE_METHOD" == "bridge" ]]; then
+     echo "bridge=${BRIDGE_IFACE}" >> $CONFDIR/hostapd.conf
+ elif [[ $NO_DNSMASQ -eq 0 ]]; then
+     # dnsmasq config (dhcp + dns)
+-    DNSMASQ_VER=$(dnsmasq -v | grep -m1 -oE '[0-9]+(\.[0-9]+)*\.[0-9]+')
+-    version_cmp $DNSMASQ_VER 2.63
+-    if [[ $? -eq 1 ]]; then
++    if [[ $BIND_INTERFACES -eq 1 ]]; then
+         DNSMASQ_BIND=bind-interfaces
+     else
+-        DNSMASQ_BIND=bind-dynamic
++        DNSMASQ_VER=$(dnsmasq -v | grep -m1 -oE '[0-9]+(\.[0-9]+)*\.[0-9]+')
++        version_cmp $DNSMASQ_VER 2.63
++        if [[ $? -eq 1 ]]; then
++            DNSMASQ_BIND=bind-interfaces
++        else
++            DNSMASQ_BIND=bind-dynamic
++        fi
+     fi
