@@ -64,3 +64,15 @@ index edc610f..5e9eef7 100755
 +            DNSMASQ_BIND=bind-dynamic
 +        fi
      fi
+
+@@ -1788,9 +1798,10 @@ elif [[ $NO_DNSMASQ -eq 0 ]]; then
+     cat << EOF > $CONFDIR/dnsmasq.conf
+ listen-address=${GATEWAY}
+ ${DNSMASQ_BIND}
+ dhcp-range=${GATEWAY%.*}.1,${GATEWAY%.*}.254,255.255.255.0,24h
+ dhcp-option-force=option:router,${GATEWAY}
+ dhcp-option-force=option:dns-server,${DHCP_DNS}
+ EOF
++    [[ $BIND_INTERFACES -eq 1 && -n "$VWIFI_IFACE" ]] && echo "interface=${VWIFI_IFACE}" >> $CONFDIR/dnsmasq.conf
+     MTU=$(get_mtu $INTERNET_IFACE)
+     [[ -n "$MTU" ]] && echo "dhcp-option-force=option:mtu,${MTU}" >> $CONFDIR/dnsmasq.conf
